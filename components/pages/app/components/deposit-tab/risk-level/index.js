@@ -14,7 +14,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
 					value={SAFE}
 					handleRiskLevel={handleRiskLevel}
 					riskLevel={riskLevel}
-					imageSrc='/assets/piggy.png'
+					imageSrc='/assets/pig-bank.png'
 					text='Safe'
 					apy={10}
 				/>
@@ -22,7 +22,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
 					value={LOW}
 					handleRiskLevel={handleRiskLevel}
 					riskLevel={riskLevel}
-					imageSrc='/assets/low-risk.png'
+					imageSrc='/assets/bank-note.png'
 					text='Low Risk'
 					apy={20}
 				/>
@@ -30,7 +30,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
 					value={HIGH}
 					handleRiskLevel={handleRiskLevel}
 					riskLevel={riskLevel}
-					imageSrc='/assets/high-risk.png'
+					imageSrc='/assets/stack-notes.png'
 					text='High Risk'
 					apy={30}
 				/>
@@ -38,7 +38,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
 					value={DEGENERATE}
 					handleRiskLevel={handleRiskLevel}
 					riskLevel={riskLevel}
-					imageSrc='/assets/diamon.png'
+					imageSrc='/assets/diamond.png'
 					text='Degenerate'
 					apy={40}
 				/>
