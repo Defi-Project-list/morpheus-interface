@@ -9,7 +9,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
 	return (
 		<div className='w-full flex flex-col justify-center items-center mt-2 mb-12'>
 			<h1 className='text-2xl mb-8'>Choose your level of risk</h1>
-			<div className='w-full grid grid-cols-4 gap-x-16 px-56'>
+			<div className='w-full grid grid-cols-4 gap-x-16 px-56 w-10/12	'>
 				<RiskButton
 					value={SAFE}
 					handleRiskLevel={handleRiskLevel}

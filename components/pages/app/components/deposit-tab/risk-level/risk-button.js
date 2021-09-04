@@ -23,10 +23,8 @@ const RiskButton = ({
 					  }
 					: {}
 			}>
-			<div className='absolute top-0 right-0 rotate-45 w-100 m-2 bg-primary-100  w-24 translate-x-1/3'>
-				<span className='font-semibold text-green-500 text-lg bg-green-100'>
-					{apy}%
-				</span>
+			<div className='absolute top-0 right-0 rotate-45 w-100 m-2 bg-green-100  w-24 translate-x-1/3'>
+				<span className='font-semibold text-green-500 text-lg '>{apy}%</span>
 			</div>
 			<img src={imageSrc} width={80} className='object-contain h-16' />
 			<span className='mt-3 font-normal text-xl'> {text}</span>
