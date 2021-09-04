@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import WalletLink from 'walletlink'
 
 import DepositInput from './deposit-input'
 
