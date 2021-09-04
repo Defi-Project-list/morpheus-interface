@@ -9,12 +9,11 @@ const RiskButton = ({
 	apy
 }) => {
 	const isSelected = riskLevel === value
-	console.log(value)
 	return (
 		<button
 			onClick={() => handleRiskLevel(value)}
-			className={`flex flex-col justify-center border items-center h-36 rounded-2xl bg-white relative overflow-hidden ${
-				isSelected && 'border-primary-500'
+			className={`flex flex-col justify-center border items-center h-36 rounded-2xl bg-white relative overflow-hidden transition-transform duration-300  ${
+				isSelected && 'border-primary-500 scale-110 '
 			}`}
 			style={
 				isSelected

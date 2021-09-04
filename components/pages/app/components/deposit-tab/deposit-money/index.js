@@ -38,8 +38,7 @@ const DepositMoney = ({ riskLevel }) => {
 		const withdrawAmount = convertToBigNum(withdraw)
 		try {
 			await vaultContract.withdraw(withdrawAmount, {
-				gasPrice,
-				gasLimit: 500000
+				gasPrice
 			})
 		} catch (err) {
 			console.log(err, 'error  withdrawing')

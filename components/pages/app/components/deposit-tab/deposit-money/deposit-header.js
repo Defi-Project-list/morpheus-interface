@@ -6,7 +6,7 @@ const DepositHeader = ({ deposit, APY }) => {
 			<div>
 				<p className='text-6xl font-bold text-primary-500'>
 					{APY * 100}%
-					<span className='text-base font-normal text-black ml-1'>
+					<span className='text-base font-normal text-primary-500 ml-1'>
 						{' APY'}
 					</span>
 				</p>
@@ -15,12 +15,18 @@ const DepositHeader = ({ deposit, APY }) => {
 			<div className='text-center'>
 				{deposit !== '0' ? (
 					<p className='text-6xl font-bold text-primary-500'>
+						{/* TODO: change css so it does not move everything when number grows */}
+						{!!deposit && (
+							<span className='text-6xl font-bold text-green-400'>+</span>
+						)}
 						<NumberFormat
 							value={deposit * APY}
 							displayType='text'
 							thousandSeparator={true}
 						/>
-						<span className='text-base font-normal text-black ml-1'>DAI</span>
+						<span className='text-base font-normal text-primary-500 ml-1'>
+							DAI
+						</span>
 					</p>
 				) : (
 					<p className='text-3xl font-bold text-primary-500'>
