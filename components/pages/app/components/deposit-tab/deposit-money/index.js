@@ -1,8 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import WalletLink from 'walletlink';
 
 import DepositInput from './deposit-input';
 
@@ -14,25 +11,32 @@ import { convertToBigNum } from '../../../utils/convertBigNumber';
 import DepositHeader from './deposit-header';
 import { DEGENERATE, HIGH, LOW, SAFE } from '../../../../../../constants';
 import { WalletContext } from '@components/pages/app';
+import Modal from './modal';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
 const DepositMoney = ({ riskLevel }) => {
   const { contracts, address } = useContext(WalletContext);
-
   const [deposit, setDeposit] = useState(0);
   const [APY, setAPY] = useState(0);
   const [withdraw, setWithdraw] = useState(0);
   const [acceptedAllowance, setAcceptedAllowance] = useState(false);
-
+  const [depositStatus, setDepositStatus] = useState();
+  const [open, setOpen] = useState(false);
   const submitDeposit = async () => {
     const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9);
     const depositAmount = convertToBigNum(deposit);
     try {
+      setDepositStatus({ loading: true });
       const tx = await contracts.vault.deposit(depositAmount, {
         gasPrice,
       });
+      setOpen(true);
+      const deposit = await tx.wait();
+      setDepositStatus({ success: true });
+      console.log({ deposit });
     } catch (err) {
+      setDepositStatus({ error: true });
       console.error(err, 'error deposit');
     }
   };
@@ -100,6 +104,7 @@ const DepositMoney = ({ riskLevel }) => {
           setWithdraw={setWithdraw}
         />
       </div>
+      <Modal open={open} setOpen={setOpen} status={depositStatus} />
     </div>
   );
 };
