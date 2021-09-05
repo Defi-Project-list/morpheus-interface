@@ -3,7 +3,7 @@ import AddressHeader from './address-header'
 import NavbarItem from './navbar-item'
 import { PlanetIcon } from '@assets/icons'
 
-const AppHeader = ({ screenState, setScreenState }) => {
+const AppHeader = ({ screenState, setScreenState, setAccountData }) => {
 	const handleScreenState = (e) => {
 		setScreenState(e.target.value)
 	}
@@ -23,7 +23,7 @@ const AppHeader = ({ screenState, setScreenState }) => {
 					/>
 				))}
 			</div>
-			<AddressHeader />
+			<AddressHeader setAccountData={setAccountData} />
 		</div>
 	)
 }

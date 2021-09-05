@@ -35,8 +35,8 @@ function formatWalletAddress(walletAddress) {
 					${walletAddress?.slice(walletAddress?.length - 4, walletAddress?.length)}`
 }
 
-const AddressHeader = () => {
-	const { providerAddress, openModal, error } = useEthers()
+const AddressHeader = ({ setAccountData }) => {
+	const { providerAddress, openModal, error } = useEthers(setAccountData)
 	return (
 		<div className='flex justify-end w-1/3 items-end text-primary-500 font-semibold items-center'>
 			{providerAddress ? (

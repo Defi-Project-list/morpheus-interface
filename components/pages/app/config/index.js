@@ -1,151 +1,145 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import Web3Modal from 'web3modal'
-import { ethers, providers } from 'ethers'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import WalletLink from 'walletlink'
+import React, { useCallback, useEffect, useState } from 'react';
+import Web3Modal from 'web3modal';
+import { ethers, providers } from 'ethers';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import WalletLink from 'walletlink';
 
-import TokenArtifact from '../contracts/SaversToken.json'
-import VaultArtifact from '../contracts/SaversVault.json'
-import { contractAddress } from './addresses'
-import { convertToNum } from '../utils/convertBigNumber'
+import TokenArtifact from '../contracts/SaversToken.json';
+import VaultArtifact from '../contracts/SaversVault.json';
+import { contractAddress } from './addresses';
+import { convertToNum } from '../utils/convertBigNumber';
+import ERC20ABI from '../contracts/ERC20.json';
 
-const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
+const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad';
 
-const WRONG_NETWORK = 'wrong network'
+const WRONG_NETWORK = 'wrong network';
 
 const providerOptions = {
-	walletconnect: {
-		package: WalletConnectProvider, // required
-		options: {
-			infuraId: INFURA_ID // required
-		}
-	},
-	'custom-walletlink': {
-		display: {
-			logo: 'https://play-lh.googleusercontent.com/PjoJoG27miSglVBXoXrxBSLveV6e3EeBPpNY55aiUUBM9Q1RCETKCOqdOkX2ZydqVf0',
-			name: 'Coinbase',
-			description: 'Connect to Coinbase Wallet (not Coinbase App)'
-		},
-		options: {
-			appName: 'Coinbase', // Your app name
-			networkUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
-			chainId: 1
-		},
-		package: WalletLink,
-		connector: async (_, options) => {
-			const { appName, networkUrl, chainId } = options
-			const walletLink = new WalletLink({
-				appName
-			})
-			const provider = walletLink.makeWeb3Provider(networkUrl, chainId)
-			await provider.enable()
-			return provider
-		}
-	}
-}
+  walletconnect: {
+    package: WalletConnectProvider, // required
+    options: {
+      infuraId: INFURA_ID, // required
+    },
+  },
+  'custom-walletlink': {
+    display: {
+      logo: 'https://play-lh.googleusercontent.com/PjoJoG27miSglVBXoXrxBSLveV6e3EeBPpNY55aiUUBM9Q1RCETKCOqdOkX2ZydqVf0',
+      name: 'Coinbase',
+      description: 'Connect to Coinbase Wallet (not Coinbase App)',
+    },
+    options: {
+      appName: 'Coinbase', // Your app name
+      networkUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
+      chainId: 1,
+    },
+    package: WalletLink,
+    connector: async (_, options) => {
+      const { appName, networkUrl, chainId } = options;
+      const walletLink = new WalletLink({
+        appName,
+      });
+      const provider = walletLink.makeWeb3Provider(networkUrl, chainId);
+      await provider.enable();
+      return provider;
+    },
+  },
+};
 
-export const useEthers = () => {
-	const [wallet, setWallet] = useState({})
-	const [approvalEvents, setApprovalEvents] = useState()
-	const [error, setError] = useState()
-	const [vaultContract, setVaultContract] = useState()
-	const [tokenContract, setTokenContract] = useState()
+export const useEthers = (callback) => {
+  const [wallet, setWallet] = useState({});
+  const [approvalEvents, setApprovalEvents] = useState();
+  const [error, setError] = useState();
 
-	async function getWalletInfo(provider) {
-		const web3Provider = new providers.Web3Provider(provider)
-		const network = await web3Provider.getNetwork()
-		if (network?.name !== 'matic') {
-			setError(WRONG_NETWORK)
-			return null
-		}
-		const signer = await web3Provider.getSigner()
-		const address = await signer.getAddress()
-		const balance = await web3Provider.getBalance(address)
-		setWallet({ address, balance })
-		return signer
-	}
+  async function getWalletInfo(provider) {
+    const web3Provider = new providers.Web3Provider(provider);
+    const network = await web3Provider.getNetwork();
+    if (network?.name !== 'matic') {
+      setError(WRONG_NETWORK);
+      return null;
+    }
+    const signer = await web3Provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = await web3Provider.getBalance(address);
+    const contracts = await getContracts(signer);
+    setWallet({ address, balance, signer, contracts });
+    return signer;
+  }
 
-	async function getProvider() {
-		if (typeof window == 'undefined') return {}
+  async function getProvider() {
+    if (typeof window == 'undefined') return {};
 
-		const web3Modal = new Web3Modal({
-			network: 'matic', // optional
-			cacheProvider: true,
-			providerOptions // required
-		})
+    const web3Modal = new Web3Modal({
+      network: 'matic', // optional
+      cacheProvider: true,
+      providerOptions, // required
+    });
 
-		const provider = await web3Modal.connect()
-		const signer = await getWalletInfo(provider)
-		return { provider, signer }
-	}
+    const provider = await web3Modal.connect();
+    const signer = await getWalletInfo(provider);
 
-	function getContracts(signer) {
-		console.log({ signer })
-		if (!signer) return null
-		const _vault_contract = new ethers.Contract(
-			contractAddress.DAI_SAVERS_VAULT,
-			VaultArtifact.abi,
-			signer
-		)
+    return { provider, signer };
+  }
 
-		const _token_contract = new ethers.Contract(
-			contractAddress.DAI,
-			TokenArtifact.abi,
-			signer
-		)
+  function getContracts(signer) {
+    if (!signer) return null;
+    const vault = new ethers.Contract(contractAddress.DAI_VAULT, VaultArtifact.abi, signer);
 
-		setVaultContract(_vault_contract)
-		setTokenContract(_token_contract)
-	}
+    const token = new ethers.Contract(contractAddress.DAI, TokenArtifact.abi, signer);
 
-	function listenProviderEvents(provider) {
-		if (!provider) return
-		provider.on('accountsChanged', (accounts) => {
-			getWalletInfo(provider)
-			console.log('accountsChanged', accounts)
-		})
+    const DAI = new ethers.Contract(contractAddress.DAI, ERC20ABI, signer);
 
-		// Subscribe to chainId change
-		provider.on('chainChanged', (chainId) => {
-			console.log('chainChanged', chainId)
-		})
+    return { vault, token, DAI };
+  }
 
-		// Subscribe to networkId change
-		provider.on('networkChanged', async (networkId) => {
-			const web3Provider = new providers.Web3Provider(provider)
-			const network = await web3Provider.getNetwork()
-			if (network?.name !== 'matic') {
-				setError(WRONG_NETWORK)
-			} else {
-				setError(null)
-			}
-		})
-	}
+  function listenProviderEvents(provider) {
+    if (!provider) return;
+    provider.on('accountsChanged', (accounts) => {
+      getWalletInfo(provider);
+      console.log('accountsChanged', accounts);
+    });
 
-	async function init() {
-		try {
-			const { provider, signer, error } = await getProvider()
-			if (error) {
-				setError(error)
-				return null
-			}
-			await getContracts(signer)
-			listenProviderEvents(provider)
-		} catch (e) {
-			console.log('Could not get a wallet connection', e)
-			return
-		}
-	}
+    // Subscribe to chainId change
+    provider.on('chainChanged', (chainId) => {
+      console.log('chainChanged', chainId);
+    });
 
-	function openModal() {
-		init()
-	}
+    // Subscribe to networkId change
+    provider.on('networkChanged', async (networkId) => {
+      const web3Provider = new providers.Web3Provider(provider);
+      const network = await web3Provider.getNetwork();
+      if (network?.name !== 'matic') {
+        setError(WRONG_NETWORK);
+      } else {
+        setError(null);
+      }
+    });
+  }
 
-	return {
-		providerAddress: wallet?.address,
-		tokenContract,
-		vaultContract,
-		openModal,
-		error
-	}
-}
+  async function init() {
+    try {
+      const { provider, signer, error } = await getProvider();
+      if (error) {
+        setError(error);
+        return null;
+      }
+      listenProviderEvents(provider);
+    } catch (e) {
+      console.log('Could not get a wallet connection', e);
+      return;
+    }
+  }
+
+  function openModal() {
+    init();
+  }
+
+  useEffect(() => {
+    callback && callback(wallet);
+  }, [wallet.address]);
+
+  return {
+    providerAddress: wallet?.address,
+    openModal,
+    error,
+  };
+};

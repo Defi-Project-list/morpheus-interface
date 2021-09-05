@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
@@ -13,11 +13,13 @@ import { checkAllowance } from '../../../utils/checkAllowance'
 import { convertToBigNum } from '../../../utils/convertBigNumber'
 import DepositHeader from './deposit-header'
 import { DEGENERATE, HIGH, LOW, SAFE } from '../../../../../../constants'
+import { WalletContext } from '@components/pages/app'
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION)
 
 const DepositMoney = ({ riskLevel }) => {
-	const { providerAddress, tokenContract, vaultContract } = useEthers()
+	const { contracts, address } = useContext(WalletContext)
+
 	const [deposit, setDeposit] = useState(0)
 	const [APY, setAPY] = useState(0)
 	const [withdraw, setWithdraw] = useState(0)
@@ -27,7 +29,7 @@ const DepositMoney = ({ riskLevel }) => {
 		const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9)
 		const depositAmount = convertToBigNum(deposit)
 		try {
-			await vaultContract.deposit(depositAmount, {
+			await contracts.vault.deposit(depositAmount, {
 				gasPrice,
 				gasLimit: 500000
 			})
@@ -40,7 +42,7 @@ const DepositMoney = ({ riskLevel }) => {
 		const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9)
 		const withdrawAmount = convertToBigNum(withdraw)
 		try {
-			await vaultContract.withdraw(withdrawAmount, {
+			await contracts.vault.withdraw(withdrawAmount, {
 				gasPrice
 			})
 		} catch (err) {
@@ -52,14 +54,15 @@ const DepositMoney = ({ riskLevel }) => {
 		const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9)
 		const depositAmount = convertToBigNum(deposit)
 		try {
-			const approveDeposit = await tokenContract.approve(
-				contractAddress.DAI_SAVERS_VAULT,
+			console.log({ depositAmount, contracts })
+			const approveDeposit = await contracts.DAI.approve(
+				contractAddress.DAI_VAULT,
 				depositAmount,
 				{ gasPrice }
 			)
 			await approveDeposit.wait()
 			setAcceptedAllowance(
-				await checkAllowance(providerAddress, tokenContract, deposit)
+				await checkAllowance(address, contracts.DAI, deposit)
 			)
 		} catch (err) {
 			console.log(err, 'error approving app')
@@ -74,12 +77,18 @@ const DepositMoney = ({ riskLevel }) => {
 		return null
 	}
 
+	async function allowance() {
+		const isAllowanceApproved = await checkAllowance(
+			address,
+			contracts?.DAI,
+			deposit
+		)
+		console.log(isAllowanceApproved)
+		setAcceptedAllowance(isAllowanceApproved)
+	}
+
 	useEffect(() => {
-		;(async () => {
-			setAcceptedAllowance(
-				await checkAllowance(providerAddress, tokenContract, deposit)
-			)
-		})()
+		allowance()
 	}, [deposit])
 
 	useEffect(() => {
