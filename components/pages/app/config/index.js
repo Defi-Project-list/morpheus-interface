@@ -42,64 +42,80 @@ const providerOptions = {
 	}
 }
 
-let web3Modal
-if (typeof window !== 'undefined') {
-	web3Modal = new Web3Modal({
-		network: 'mainnet', // optional
-		cacheProvider: false,
-		providerOptions // required
-	})
-}
-
 export const useEthers = () => {
-	const [providerAddress, setProviderAddress] = useState()
+	const [wallet, setWallet] = useState({})
 	const [approvalEvents, setApprovalEvents] = useState()
 	const [vaultContract, setVaultContract] = useState()
 	const [tokenContract, setTokenContract] = useState()
 
-	// Connects to the smart contract token id (check /contracts/contract-address.json)
+	async function getWalletInfo(provider) {
+		const web3Provider = new providers.Web3Provider(provider)
+		const signer = await web3Provider.getSigner()
+		const address = await signer.getAddress()
+		const network = await web3Provider.getNetwork()
+		if (network?.name !== 'matic') {
+			alert('Incompatibale network')
+			return {}
+		}
+		const balance = await web3Provider.getBalance(address)
+		setWallet({ address, balance })
+		return signer
+	}
+
+	async function getProvider() {
+		if (typeof window == 'undefined') return {}
+
+		const web3Modal = new Web3Modal({
+			network: 'matic', // optional
+			cacheProvider: true,
+			providerOptions // required
+		})
+
+		const provider = await web3Modal.connect()
+		const signer = await getWalletInfo(provider)
+		return { provider, signer }
+	}
+
+	function getContracts(signer) {
+		if (!signer) return null
+		const _vault_contract = new ethers.Contract(
+			contractAddress.DAI_SAVERS_VAULT,
+			VaultArtifact.abi,
+			signer
+		)
+
+		const _token_contract = new ethers.Contract(
+			contractAddress.DAI,
+			TokenArtifact.abi,
+			signer
+		)
+
+		setVaultContract(_vault_contract)
+		setTokenContract(_token_contract)
+	}
+
+	function listenProviderEvents(provider) {
+		provider.on('accountsChanged', (accounts) => {
+			getWalletInfo(provider)
+			console.log('accountsChanged', accounts)
+		})
+
+		// Subscribe to chainId change
+		provider.on('chainChanged', (chainId) => {
+			console.log('chainChanged', chainId)
+		})
+
+		// Subscribe to networkId change
+		provider.on('networkChanged', (networkId) => {
+			console.log('networkChanged', networkId)
+		})
+	}
+
 	async function init() {
 		try {
-			const provider = await web3Modal.connect()
-			const web3Provider = new providers.Web3Provider(provider)
-
-			const signer = web3Provider.getSigner()
-			const address = await signer.getAddress()
-
-			const network = await web3Provider.getNetwork()
-
-			const _vault_contract = new ethers.Contract(
-				contractAddress.DAI_SAVERS_VAULT,
-				VaultArtifact.abi,
-				signer
-			)
-
-			const _token_contract = new ethers.Contract(
-				contractAddress.DAI,
-				TokenArtifact.abi,
-				signer
-			)
-
-			setProviderAddress(address)
-			setVaultContract(_vault_contract)
-			setTokenContract(_token_contract)
-
-			console.log({ signer, address, network })
-
-			// Subscribe to accounts change
-			provider.on('accountsChanged', (accounts) => {
-				console.log('accountsChanged', accounts)
-			})
-
-			// Subscribe to chainId change
-			provider.on('chainChanged', (chainId) => {
-				console.log('chainChanged', chainId)
-			})
-
-			// Subscribe to networkId change
-			provider.on('networkChanged', (networkId) => {
-				console.log('networkChanged', networkId)
-			})
+			const { provider, signer } = await getProvider()
+			await getContracts(signer)
+			listenProviderEvents(provider)
 		} catch (e) {
 			console.log('Could not get a wallet connection', e)
 			return
@@ -123,23 +139,13 @@ export const useEthers = () => {
 	// 		}
 	// 	})
 
-	// 	const network = await _provider.getNetwork()
-
-	// 	if (network?.name !== 'matic') {
-	// 		alert('Incompatibale network')
-	// 	}
-
-	// 	// console.log(await _provider.getSigner());
-
-	// 	const userAddress = await _provider.getSigner().getAddress()
-	// 	const userBalance = await _provider.getBalance(userAddress)
 	// 	// const _approvalEvents = _token_contract.filters.Approval(null, userAddress);
 
-	// 	setProviderAddress(userAddress)
-	// 	setVaultContract(_vault_contract)
-	// 	setTokenContract(_token_contract)
-	// 	// setApprovalEvents(_approvalEvents);
 	// }
-
-	return { providerAddress, tokenContract, vaultContract, openModal }
+	return {
+		providerAddress: wallet?.address,
+		tokenContract,
+		vaultContract,
+		openModal
+	}
 }

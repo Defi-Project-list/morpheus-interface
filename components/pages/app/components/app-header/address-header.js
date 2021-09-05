@@ -4,7 +4,7 @@ import { useEthers } from '../../config'
 
 const AddressHeader = () => {
 	const { providerAddress, openModal } = useEthers()
-	// console.log(providerAddress)
+
 	return (
 		<div className='flex justify-end w-1/3 items-end text-primary-500 font-semibold items-center'>
 			{providerAddress ? (
@@ -22,7 +22,7 @@ const AddressHeader = () => {
 					Connect
 				</button>
 			)}
-			<RobotAddress w='40px' h='40px' />
+			<RobotAddress w='60px' h='60px' />
 		</div>
 	)
 }
