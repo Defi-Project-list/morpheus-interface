@@ -124,7 +124,7 @@ export const useEthers = (callback) => {
       }
       listenProviderEvents(provider);
     } catch (e) {
-      console.log('Could not get a wallet connection', e);
+      console.error('Could not get a wallet connection', e);
       return;
     }
   }
