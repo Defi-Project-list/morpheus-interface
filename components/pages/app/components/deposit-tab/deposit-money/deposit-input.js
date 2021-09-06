@@ -31,7 +31,6 @@ const DepositInput = ({
     <div className="w-full flex justify-center items-center">
       <div className="mt-12 w-10/12 flex flex-col items-center justify-center py-4 h-40">
         <div className="w-3/5">
-          <p className="w-full text-left text-lg mb-2">Deposit Amount</p>
           <div className="flex mb-8">
             <NumberFormat
               value={deposit}

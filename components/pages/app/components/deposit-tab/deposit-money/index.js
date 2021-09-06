@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import DepositInput from './deposit-input';
 
-import { useEthers } from '../../../config';
 import { contractAddress } from '../../../config/addresses';
 
 import { checkAllowance } from '../../../utils/checkAllowance';
@@ -11,7 +10,7 @@ import { convertToBigNum } from '../../../utils/convertBigNumber';
 import DepositHeader from './deposit-header';
 import { DEGENERATE, HIGH, LOW, SAFE } from '../../../../../../constants';
 import { WalletContext } from '@components/pages/app';
-import Modal from './modal';
+import Modal from './deposit-modal';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
