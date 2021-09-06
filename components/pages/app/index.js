@@ -21,8 +21,6 @@ const App = () => {
       const [DepositTokens] = await Promise.all([
         accountData.contracts.vault.queryFilter('DepositTokens', BLOCK_NUMBER),
       ]);
-
-      console.log({ DepositTokens });
     } catch (err) {
       console.error('error', err);
     }

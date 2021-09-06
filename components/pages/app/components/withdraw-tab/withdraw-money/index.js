@@ -1,7 +1,7 @@
 import NumberFormat from 'react-number-format';
 import { Button } from '../../deposit-tab/deposit-money/deposit-input';
 import { convertToBigNum } from '../../../utils/convertBigNumber';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { contractAddress } from '@components/pages/app/config/addresses';
 import { WalletContext } from '@components/pages/app';
@@ -13,7 +13,6 @@ const WithdrawMoney = () => {
 
   const formattedShares = shares / Math.pow(10, 18);
 
-  console.log({ shares, sharePrice });
   const [withdraw, setWithdraw] = useState(0);
   const handleWithdraw = (values) => {
     const { value } = values;
@@ -27,11 +26,11 @@ const WithdrawMoney = () => {
         gasPrice,
       });
       const res = await tx.wait();
-      console.log({ res });
     } catch (err) {
       console.error(err, 'error deposit');
     }
   };
+
   return (
     <div className="w-1/3">
       <div>

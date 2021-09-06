@@ -33,7 +33,6 @@ const DepositMoney = ({ riskLevel }) => {
       setOpen(true);
       const deposit = await tx.wait();
       setDepositStatus({ success: true });
-      console.log({ deposit });
     } catch (err) {
       setDepositStatus({ error: true });
       console.error(err, 'error deposit');
