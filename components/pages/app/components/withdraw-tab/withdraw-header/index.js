@@ -1,5 +1,7 @@
 import PieChartWrapper from '@components/components/graphs/pie-chart';
 import AreaLineChart from '@components/components/graphs/area-chart';
+import { useContext } from 'react';
+import { WalletContext } from '@components/pages/app';
 
 const data = [
   { name: 'Safe', value: 500 },
@@ -27,8 +29,8 @@ const HoldingsViz = () => {
   );
 };
 
-const AccountBalance = () => {
-  const formattedBalance = new Intl.NumberFormat('en-us').format(100000);
+const AccountBalance = ({ balance }) => {
+  const formattedBalance = new Intl.NumberFormat('en-us').format(balance);
   const formattedProfits = new Intl.NumberFormat('en-us').format(1000);
   return (
     <div className="flex justify-between ">
@@ -48,9 +50,12 @@ const AccountBalance = () => {
 };
 
 const WithdrawHeader = () => {
+  const { shares, sharePrice } = useContext(WalletContext);
+
+  const balance = (shares * sharePrice) / (Math.pow(10, 18) * Math.pow(10, 18));
   return (
     <div className="w-6/12">
-      <AccountBalance />
+      <AccountBalance balance={balance} />
       <HoldingsViz />
     </div>
   );

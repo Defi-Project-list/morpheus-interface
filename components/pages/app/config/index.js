@@ -61,7 +61,9 @@ export const useEthers = (callback) => {
     const address = await signer.getAddress();
     const balance = await web3Provider.getBalance(address);
     const contracts = await getContracts(signer);
-    setWallet({ address, balance, signer, contracts });
+    const shares = await contracts.sDAI.balanceOf(address);
+    const sharePrice = await contracts.vault.getPricePerFullShare();
+    setWallet({ address, balance, signer, contracts, shares, sharePrice });
     return signer;
   }
 
@@ -88,7 +90,9 @@ export const useEthers = (callback) => {
 
     const DAI = new ethers.Contract(contractAddress.DAI, ERC20ABI, signer);
 
-    return { vault, token, DAI };
+    const sDAI = new ethers.Contract(contractAddress.SAVERS_DAI, ERC20ABI, signer);
+
+    return { vault, token, DAI, sDAI };
   }
 
   function listenProviderEvents(provider) {

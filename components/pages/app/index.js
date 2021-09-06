@@ -28,10 +28,10 @@ const App = () => {
     }
   }
   useEffect(() => {
-    const interval = setInterval(() => {
-      listenEvents();
-    }, MINUTE_MS);
-    return () => clearInterval(interval);
+    // const interval = setInterval(() => {
+    //   listenEvents();
+    // }, MINUTE_MS);
+    // return () => clearInterval(interval);
   }, [accountData?.address]);
 
   return (

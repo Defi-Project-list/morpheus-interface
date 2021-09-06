@@ -5,12 +5,15 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { contractAddress } from '@components/pages/app/config/addresses';
 import { WalletContext } from '@components/pages/app';
-import Dropdown from '@components/components/dropdown';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
 const WithdrawMoney = () => {
-  const { contracts } = useContext(WalletContext);
+  const { contracts, shares, sharePrice } = useContext(WalletContext);
+
+  const formattedShares = shares / Math.pow(10, 18);
+
+  console.log({ shares, sharePrice });
   const [withdraw, setWithdraw] = useState(0);
   const handleWithdraw = (values) => {
     const { value } = values;
@@ -32,6 +35,7 @@ const WithdrawMoney = () => {
   return (
     <div className="w-1/3">
       <div>
+        <span>shares available: {formattedShares?.toString()}</span>
         <div className="flex mb-8 ">
           <NumberFormat
             value={withdraw}
