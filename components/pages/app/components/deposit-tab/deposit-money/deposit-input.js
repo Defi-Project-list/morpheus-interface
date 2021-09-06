@@ -1,3 +1,4 @@
+import { ButtonSpinner } from '@components/components/spinner';
 import NumberFormat from 'react-number-format';
 
 export const Button = ({ onClick, children }) => {
@@ -15,12 +16,10 @@ const DepositInput = ({
   screenState,
   acceptedAllowance,
   deposit,
-  withdraw,
   submitDeposit,
-  submitWithdraw,
   submitApprove,
   setDeposit,
-  setWithdraw,
+  depositStatus,
 }) => {
   const handleDeposit = (values) => {
     const { value } = values;
@@ -51,7 +50,11 @@ const DepositInput = ({
             </div>
           </div>
           <div className="w-full flex justify-center items-center">
-            {acceptedAllowance ? (
+            {depositStatus?.loading ? (
+              <Button>
+                <ButtonSpinner />
+              </Button>
+            ) : acceptedAllowance ? (
               <Button onClick={submitDeposit}>Deposit Amount</Button>
             ) : (
               <Button onClick={submitApprove}> Approve Transfer</Button>

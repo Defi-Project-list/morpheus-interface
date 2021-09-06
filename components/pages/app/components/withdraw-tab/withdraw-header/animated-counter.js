@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 let incrementTime = 450;
-const Count = ({ number }) => {
+const Count = ({ number, decimals }) => {
   const [count, setCount] = useState({ actual: number, end: number + 1 });
 
   useEffect(() => {
