@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { contractAddress } from '@components/pages/app/config/addresses';
 import { WalletContext } from '@components/pages/app';
+import Dropdown from '@components/components/dropdown';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
@@ -43,11 +44,7 @@ const WithdrawMoney = () => {
             className="py-1 px-3 rounded-t-lg rounded-r-lg rounded-b-lg rounded-l-none text-xl bg-primary-100 flex items-center"
             style={{ width: '100px' }}
           >
-            <img
-              src="https://raw.githubusercontent.com/uniswap/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"
-              width="20px"
-            />
-            <span className="ml-1">DAI</span>
+            <span className="ml-1">mDAI</span>
           </div>
         </div>
         <div className="w-full flex justify-center items-center">

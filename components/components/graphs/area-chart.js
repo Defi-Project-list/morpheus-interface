@@ -1,47 +1,38 @@
 import React from 'react';
-import {
-  AreaChart,
-  Area,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
 
 const data = [
   {
     name: 'Page A',
-    uv: 1000,
+    uv: 100,
   },
   {
     name: 'Page B',
-    uv: 2000,
+    uv: 200,
   },
   {
     name: 'Page C',
-    uv: 3000,
+    uv: 300,
   },
   {
     name: 'Page D',
-    uv: 4780,
+    uv: 478,
   },
   {
     name: 'Page E',
-    uv: 5890,
+    uv: 580,
   },
   {
     name: 'Page F',
-    uv: 6390,
+    uv: 639,
   },
   {
     name: 'Page G',
-    uv: 7490,
+    uv: 749,
   },
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {
-  console.log(payload);
   if (active && payload && payload.length) {
     const data = payload?.[0]?.payload;
     return (
@@ -62,8 +53,8 @@ const AreaLineChart = () => {
         height={300}
         data={data}
         margin={{
-          top: 10,
-          right: 0,
+          top: 0,
+          right: -20,
           left: 0,
           bottom: 0,
         }}
@@ -74,6 +65,22 @@ const AreaLineChart = () => {
             <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.1} />
           </linearGradient>
         </defs>
+        <YAxis
+          orientation="right"
+          tickCount={3}
+          interval="preserveStartEnd"
+          tickSize={2}
+          unit="k"
+          tick={{
+            stroke: 'none',
+            strokeWidth: 1,
+            fontSize: '14px',
+            fontWeight: '500',
+            fill: '#8796e1',
+            width: 40,
+          }}
+          axisLine={false}
+        />
         <Tooltip content={<CustomTooltip />} />
         <Area type="monotone" dataKey="uv" stroke="#0147ba" fill="url(#colorValue)" />
       </AreaChart>
