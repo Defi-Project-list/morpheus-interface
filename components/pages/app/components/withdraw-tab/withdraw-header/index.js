@@ -15,10 +15,6 @@ const WithdrawHeader = () => {
     setBalance(userBalance);
   }
 
-  async function getAccountShares() {
-    const shares = await contracts.sDAI.balanceOf(address);
-  }
-
   useEffect(() => {
     if (!shares) return null;
     const interval = setInterval(() => {

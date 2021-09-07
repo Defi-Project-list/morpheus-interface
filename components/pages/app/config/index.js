@@ -139,11 +139,11 @@ export const useEthers = (callback) => {
   }
 
   useEffect(() => {
-    callback && callback(wallet);
+    callback && callback({ ...wallet, updateAccountData });
   }, [wallet.address]);
 
   function updateAccountData() {
-    getWalletInfo(initialProvider);
+    getProvider();
   }
   return {
     providerAddress: wallet?.address,

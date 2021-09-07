@@ -14,6 +14,8 @@ const App = () => {
   const [screenState, setScreenState] = useState('deposit');
   const [accountData, setAccountData] = useState();
 
+  console.log(accountData);
+
   async function listenEvents() {
     if (!accountData?.address) return;
     try {
