@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from '@components/pages/app';
 import AccountBalance from './account-balance';
-import HoldingsViz from './holding-viz';
 
 const MINUTE_MS = 10000;
 
@@ -21,13 +20,13 @@ const WithdrawHeader = () => {
     const interval = setInterval(() => {
       getSharePrice();
     }, MINUTE_MS);
+    getSharePrice();
     return () => clearInterval(interval);
   }, [shares]);
 
   return (
     <div className="w-6/12">
       <AccountBalance balance={balance} />
-      <HoldingsViz />
     </div>
   );
 };

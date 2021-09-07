@@ -4,14 +4,35 @@ import { PieChart, Pie, Tooltip, Cell, Legend, ResponsiveContainer } from 'recha
 const COLORS = ['#d4daf4', '#bbc3ee', '#5469d4', '#3f4f9f'];
 
 const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+const renderCustomizedLabel = (
+  { cx, cy, midAngle, innerRadius, outerRadius, percent, index },
+  data,
+) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
+  if (!percent) {
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+      >
+        0%
+      </text>
+    );
+  }
   return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
+    <text
+      x={y + x}
+      y={x}
+      fill="white"
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline="central"
+    >
+      {`${percent && data[index].name} ${(percent * 100).toFixed(0)}%`}
     </text>
   );
 };
@@ -25,7 +46,7 @@ const PieChartWrapper = ({ data }) => {
           cx="50%"
           cy="50%"
           labelLine={false}
-          label={renderCustomizedLabel}
+          label={(props) => renderCustomizedLabel(props, data)}
           outerRadius={80}
           dataKey="value"
         >
@@ -33,6 +54,7 @@ const PieChartWrapper = ({ data }) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
+        <Tooltip />
       </PieChart>
     </ResponsiveContainer>
   );

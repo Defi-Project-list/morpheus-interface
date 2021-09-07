@@ -43,7 +43,9 @@ const WithdrawMoney = () => {
     <>
       <div className="w-1/3">
         <div>
-          <span>shares available: {formattedShares?.toString()}</span>
+          <span className="text-primary-400">
+            You have: <span className="text-primary-500">{formattedShares?.toString()}</span> shares
+          </span>
           <div className="flex mb-8 ">
             <NumberFormat
               value={withdraw}

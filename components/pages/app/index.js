@@ -17,7 +17,7 @@ const App = () => {
   async function listenEvents() {
     if (!accountData?.address) return;
     try {
-      const BLOCK_NUMBER = 18776678;
+      const BLOCK_NUMBER = 18835756;
       const [DepositTokens] = await Promise.all([
         accountData.contracts.vault.queryFilter('DepositTokens', BLOCK_NUMBER),
       ]);
