@@ -15,7 +15,7 @@ import DepositModal, { ApproveModal } from './deposit-modal';
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
 const DepositMoney = ({ riskLevel }) => {
-  const { contracts, address } = useContext(WalletContext);
+  const { contracts, address, updateAccountData } = useContext(WalletContext);
   const [deposit, setDeposit] = useState(0);
   const [APY, setAPY] = useState(0);
   const [acceptedAllowance, setAcceptedAllowance] = useState(false);
@@ -35,6 +35,7 @@ const DepositMoney = ({ riskLevel }) => {
       setDepositOpen(true);
       const deposit = await tx.wait();
       setDepositStatus({ success: true });
+      updateAccountData();
     } catch (err) {
       setDepositStatus({ error: true });
       console.error(err, 'error deposit');

@@ -140,7 +140,7 @@ export const useEthers = (callback) => {
 
   useEffect(() => {
     callback && callback({ ...wallet, updateAccountData });
-  }, [wallet.address]);
+  }, [wallet.address, wallet.shares]);
 
   function updateAccountData() {
     getProvider();

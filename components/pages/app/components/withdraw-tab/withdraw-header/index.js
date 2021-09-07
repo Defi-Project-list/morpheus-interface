@@ -6,10 +6,9 @@ const MINUTE_MS = 10000;
 
 const WithdrawHeader = () => {
   const [balance, setBalance] = useState(0);
-  const { shares, contracts, updateAccountData } = useContext(WalletContext);
+  const { shares, contracts } = useContext(WalletContext);
 
   async function getSharePrice() {
-    console.log({ shares });
     const sharePrice = await contracts.vault.getPricePerFullShare();
     const userBalance = (shares * sharePrice) / Math.pow(10, 36);
     setBalance(userBalance);
@@ -26,7 +25,6 @@ const WithdrawHeader = () => {
 
   return (
     <div className="w-6/12">
-      <button onClick={updateAccountData}>Update Data</button>
       <AccountBalance balance={balance} />
     </div>
   );

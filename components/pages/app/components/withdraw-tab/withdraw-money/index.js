@@ -11,7 +11,7 @@ import WithdrawModal from './withdraw-modal';
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
 const WithdrawMoney = () => {
-  const { contracts, shares } = useContext(WalletContext);
+  const { contracts, shares, updateAccountData } = useContext(WalletContext);
   const [withdrawStatus, setWithdrawStatus] = useState();
   const [open, setOpen] = useState(false);
 
@@ -33,6 +33,7 @@ const WithdrawMoney = () => {
       setOpen(true);
       await tx.wait();
       setWithdrawStatus({ success: true });
+      updateAccountData();
     } catch (err) {
       setWithdrawStatus({ error: true });
       console.error(err, 'error deposit');
