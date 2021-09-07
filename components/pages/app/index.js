@@ -44,7 +44,7 @@ const App = () => {
         {screenState === WITHDRAW && <WithdrawTab />}
         <div
           style={{
-            background: 'radial-gradient(50% 50% at 50% 50%,#efefff 0,rgba(255,255,255,0) 100%)',
+            background: 'radial-gradient(50% 50% at 50% 50%, #efefff 0, rgba(255,255,255,0) 100%)',
             width: '200vw',
             height: '200vh',
             transform: 'translate(-50vw, -100vh)',

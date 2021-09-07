@@ -47,7 +47,7 @@ const providerOptions = {
 
 export const useEthers = (callback) => {
   const [wallet, setWallet] = useState({});
-  const [approvalEvents, setApprovalEvents] = useState();
+  const [initialProvider, setInitialProvider] = useState();
   const [error, setError] = useState();
 
   async function getWalletInfo(provider) {
@@ -121,12 +121,13 @@ export const useEthers = (callback) => {
 
   async function init() {
     try {
-      const { provider, signer, error } = await getProvider();
+      const { provider, error } = await getProvider();
       if (error) {
         setError(error);
         return null;
       }
       listenProviderEvents(provider);
+      setInitialProvider(provider);
     } catch (e) {
       console.error('Could not get a wallet connection', e);
       return;
@@ -141,9 +142,14 @@ export const useEthers = (callback) => {
     callback && callback(wallet);
   }, [wallet.address]);
 
+  function updateAccountData() {
+    getWalletInfo(initialProvider);
+  }
   return {
     providerAddress: wallet?.address,
     openModal,
     error,
+    updateAccountData,
+    ...wallet,
   };
 };

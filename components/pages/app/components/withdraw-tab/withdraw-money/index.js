@@ -1,12 +1,12 @@
 import NumberFormat from 'react-number-format';
 import { Button } from '../../deposit-tab/deposit-money/deposit-input';
 import { convertToBigNum } from '../../../utils/convertBigNumber';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 import { contractAddress } from '@components/pages/app/config/addresses';
 import { WalletContext } from '@components/pages/app';
-import DepositModal from '../../deposit-tab/deposit-money/deposit-modal';
 import { ButtonSpinner } from '@components/components/spinner';
+import WithdrawModal from './withdraw-modal';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
@@ -44,8 +44,13 @@ const WithdrawMoney = () => {
       <div className="w-1/3">
         <div>
           <span className="text-primary-400">
-            You have: <span className="text-primary-500">{formattedShares?.toString()}</span> shares
+            You have:{' '}
+            <span className="text-primary-500">
+              {!!formattedShares ? formattedShares?.toString() : 0}
+            </span>{' '}
+            shares
           </span>
+
           <div className="flex mb-8 ">
             <NumberFormat
               value={withdraw}
@@ -68,7 +73,7 @@ const WithdrawMoney = () => {
           </div>
         </div>
       </div>
-      <DepositModal open={open} setOpen={setOpen} status={withdrawStatus} />
+      <WithdrawModal open={open} setOpen={setOpen} status={withdrawStatus} />
     </>
   );
 };

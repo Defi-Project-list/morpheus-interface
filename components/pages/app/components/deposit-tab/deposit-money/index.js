@@ -10,7 +10,7 @@ import { convertToBigNum } from '../../../utils/convertBigNumber';
 import DepositHeader from './deposit-header';
 import { DEGENERATE, HIGH, LOW, SAFE } from '../../../../../../constants';
 import { WalletContext } from '@components/pages/app';
-import DepositModal from './deposit-modal';
+import DepositModal, { ApproveModal } from './deposit-modal';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
@@ -18,10 +18,12 @@ const DepositMoney = ({ riskLevel }) => {
   const { contracts, address } = useContext(WalletContext);
   const [deposit, setDeposit] = useState(0);
   const [APY, setAPY] = useState(0);
-  const [withdraw, setWithdraw] = useState(0);
   const [acceptedAllowance, setAcceptedAllowance] = useState(false);
   const [depositStatus, setDepositStatus] = useState();
-  const [open, setOpen] = useState(false);
+  const [openDeposit, setDepositOpen] = useState(false);
+  const [approveStatus, setApproveStatus] = useState();
+  const [openApprove, setApproveOpen] = useState(false);
+
   const submitDeposit = async () => {
     setDepositStatus({ loading: true });
     const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9);
@@ -30,7 +32,7 @@ const DepositMoney = ({ riskLevel }) => {
       const tx = await contracts.vault.deposit(depositAmount, {
         gasPrice,
       });
-      setOpen(true);
+      setDepositOpen(true);
       const deposit = await tx.wait();
       setDepositStatus({ success: true });
     } catch (err) {
@@ -39,30 +41,22 @@ const DepositMoney = ({ riskLevel }) => {
     }
   };
 
-  const submitWithdraw = async () => {
-    const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9);
-    const withdrawAmount = convertToBigNum(withdraw);
-    try {
-      await contracts.vault.withdraw(withdrawAmount, {
-        gasPrice,
-      });
-    } catch (err) {
-      console.error(err, 'error  withdrawing');
-    }
-  };
-
   const submitApprove = async () => {
+    setApproveStatus({ loading: true });
     const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9);
     const depositAmount = convertToBigNum(deposit);
     try {
       const approveDeposit = await contracts.DAI.approve(contractAddress.DAI_VAULT, depositAmount, {
         gasPrice,
       });
+      setApproveOpen(true);
       await approveDeposit.wait();
       const isAmountAllowed = await checkAllowance(address, contracts.DAI, deposit);
       setAcceptedAllowance(isAmountAllowed);
+      setApproveStatus({ success: true });
     } catch (err) {
       console.error(err, 'error approving app');
+      setApproveStatus({ error: true });
     }
   };
 
@@ -94,16 +88,14 @@ const DepositMoney = ({ riskLevel }) => {
         <DepositInput
           acceptedAllowance={acceptedAllowance}
           deposit={deposit}
-          withdraw={withdraw}
           submitDeposit={submitDeposit}
-          submitWithdraw={submitWithdraw}
           submitApprove={submitApprove}
           setDeposit={setDeposit}
-          setWithdraw={setWithdraw}
           depositStatus={depositStatus}
         />
       </div>
-      <DepositModal open={open} setOpen={setOpen} status={depositStatus} />
+      <DepositModal open={openDeposit} setOpen={setDepositOpen} status={depositStatus} />
+      <ApproveModal open={openApprove} setOpen={setApproveOpen} status={approveStatus} />
     </div>
   );
 };
