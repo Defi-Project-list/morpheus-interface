@@ -7,7 +7,7 @@ const IntroCards = ({ title, description, img, alt }) => {
 				{description}
 			</p>
 		</div>
-	);
-};
+	)
+}
 
-export default IntroCards;
+export default IntroCards
