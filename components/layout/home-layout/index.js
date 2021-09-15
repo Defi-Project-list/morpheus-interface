@@ -3,7 +3,7 @@ import { Header } from './header';
 
 const Layout = ({ children }) => {
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen'>
+		<div className='flex flex-col items-center justify-start xl:justify-center min-h-screen'>
 			<Header />
 			{children}
 			<Footer />

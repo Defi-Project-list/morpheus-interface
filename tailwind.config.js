@@ -9,10 +9,10 @@ module.exports = {
 			colors: {
 				transparent: 'transparent',
 				primary: {
-					100: '#EDE9FE',
-					500: '#8B5CF6',
-					600: '#7C3AED',
-					700: '#6D28D9',
+					100: '#fff5e5bd',
+					500: '#f9be56',
+					600: '#fbb843',
+					700: '#f1b243',
 				},
 			},
 			minHeight: {
@@ -26,6 +26,7 @@ module.exports = {
 			},
 			fontFamily: {
 				sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+				gugi: ['Gugi'],
 			},
 		},
 	},

@@ -7,7 +7,7 @@ export const Footer = () => {
 				<PlanetIcon w='65px' />
 				<div className='pt-8'>
 					<p className='flex items-center font-serif justify-center text-xl font-semibold'>
-						Made with 💜 👾 <br /> by idealist dreamers
+						Made with 💛 <br /> by epsilons dreamers
 					</p>
 					<p className='mt-6 font-serif'>©AppName, Inc 2021</p>
 				</div>

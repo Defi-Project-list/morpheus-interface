@@ -7,7 +7,7 @@ export default function LandingPage() {
 	return (
 		<Layout>
 			<Head>
-				<title>AppName Finance</title>
+				<title>Epsilon Finance</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Landing />

@@ -7,13 +7,13 @@ import Cards from './cards';
 
 const HomeIndex = () => {
 	return (
-		<div className='px-36 font-sans'>
+		<div className='px-10 xl:px-36 font-sans'>
 			<Hero />
 			<Intro />
-			<Works />
+			{/*<Works />
 			<Calculator />
 			<Solution />
-			<Cards />
+			<Cards /> */}
 		</div>
 	);
 };

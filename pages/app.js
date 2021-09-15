@@ -5,7 +5,7 @@ export default function AppPage() {
 	return (
 		<>
 			<Head>
-				<title>AppName App</title>
+				<title>Epsilon Finance</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<App />
