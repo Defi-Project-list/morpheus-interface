@@ -1,48 +1,69 @@
-import { PlanetIcon } from '@assets/icons';
+import Link from 'next/link';
+
+const classNameItem =
+  'w-min cursor-pointer text-sm xl:text-base py-1 my-1 xl:my-2 border-b-2 border-transparent hover:border-primary-500 whitespace-nowrap';
 
 export const Footer = () => {
-	return (
-		<footer className='flex flex-col xl:flex-row items-start xl:items-center justify-center w-full px-10 xl:px-36 py-10 xl:py-0 xl:my-10 mb-20 xl:h-60 bg-black'>
-			<div className='w-full xl:w-2/6 h-full flex xl:flex-col justify-start items-start'>
-				<PlanetIcon w='25px' />
-				<h1 className='ml-4 text-xl xl:text-3xl font-bold text-primary-500 font-gugi tracking-wide'>
-					Epsilon
-				</h1>
-				<div className='pt-8 hidden xl:block'>
-					<p className='flex items-center font-serif justify-center text-xl font-semibold'>
-						Made with 💜 👾 <br /> by idealist dreamers
-					</p>
-					<p className='mt-6 font-serif'>©AppName, Inc 2021</p>
-				</div>
-			</div>
-			<div className='w-full xl:w-4/6 grid grid-cols-2  xl:grid-cols-3 gap-y-10 gap-x-10 xl:gap-x-20 h-full mt-10 xl:mt-0'>
-				<div>
-					<h4 className='text-lg font-medium mb-4 text-primary-500'>Pages</h4>
-					<div className='w-4/6 grid grid-cols-1 grid-rows-6 h-full text-white'>
-						<p>Home</p>
-						<p>App</p>
-						<p>How it works</p>
-						<p>Why to use it</p>
-						<p>About us</p>
-					</div>
-				</div>
-				<div>
-					<h4 className='text-lg font-medium mb-4 text-primary-500'>Docs</h4>
-					<div className='w-4/6 grid grid-cols-1 grid-rows-6 h-full text-white'>
-						<p>Documentation</p>
-						<p>Terms</p>
-						<p>Privacy</p>
-					</div>
-				</div>
-				<div className='hidden xl:block'>
-					<h4 className='text-lg font-medium mb-4 text-primary-500'>Social</h4>
-					<div className='w-4/6 grid grid-cols-1 grid-rows-6 h-full text-white'>
-						<p>Twitter</p>
-						<p>Linkedin</p>
-						<p>Blog</p>
-					</div>
-				</div>
-			</div>
-		</footer>
-	);
+  return (
+    <footer className="w- flex flex-col xl:flex-row items-start xl:items-start justify-center w-full px-8 xl:px-36 py-10 xl:py-16  bg-black">
+      <div className="w-full xl:w-2/6 h-full flex flex-col justify-start items-baseline">
+        <h1 className="xl:mt-4 text-xl xl:text-3xl font-bold text-primary-500 font-gugi tracking-wide">
+          Epsilon
+        </h1>
+        <div className="text-white">
+          <p className="mt-2 xl:mt-4 text-sm xl:text-base font-serif">© Epsilon Labs, Inc 2021</p>
+        </div>
+      </div>
+      <div className="w-full xl:w-4/6 grid grid-cols-2  xl:grid-cols-3 gap-y-10 gap-x-10 xl:gap-x-20 mt-10 xl:mt-0">
+        <div>
+          <h4 className="text-lg font-medium mb-4 text-primary-500">Pages</h4>
+          <div className="w-full xl:w-4/6 flex flex-col text-white ">
+            <p className={classNameItem}>
+              <Link href="/">Home</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/app">App</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">How it works</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">Why use it</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">About us</Link>
+            </p>
+          </div>
+        </div>
+        <div>
+          <h4 className="text-lg font-medium mb-4 text-primary-500">Docs</h4>
+          <div className="w-full xl:w-4/6 flex flex-col text-white">
+            <p className={classNameItem}>
+              <Link href="/">Documentation</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">Terms</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">Privacy</Link>
+            </p>
+          </div>
+        </div>
+        <div className="hidden xl:block">
+          <h4 className="text-lg font-medium mb-4 text-primary-500">Social</h4>
+          <div className="w-full flex flex-col h-full text-white">
+            <p className={classNameItem}>
+              <Link href="/">Twitter</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">Linkedin</Link>
+            </p>
+            <p className={classNameItem}>
+              <Link href="/">Blog</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 };

@@ -1,24 +1,40 @@
-const Button = ({
-	text,
-	textColor = 'text-primary-500',
-	size = 'medium',
-	...props
-}) => {
-	const buttonSize = {
-		small: 'text-sm',
-		medium: 'text-lg px-2 py-1 font-semibold',
-		large: 'text-base xl:text-2xl px-3 py-1',
-	}[size];
+import React from 'react';
 
-	return (
-		<>
-			<button
-				className={`border ${buttonSize} rounded-lg bg-primary-500 text-white border-primary-700 bg-transparent ${textColor} hover:bg-primary-100`}
-				{...props}>
-				{text}
-			</button>
-		</>
-	);
-};
+const Button = React.forwardRef(
+  (
+    {
+      children,
+
+      variant = 'contained',
+      color = 'primary',
+      textColor = 'white',
+      size = 'lg',
+      ...props
+    },
+    ref,
+  ) => {
+    const buttonSize = {
+      sm: 'text-md xl:text-lg px-2 py-1 font-semibold rounded-md xl:rounded-lg',
+      lg: 'text-lg xl:text-2xl px-3 py-1 rounded-lg',
+    }[size];
+
+    const buttonVariant = {
+      contained: `bg-${color}-500 border-${color}-700`,
+      outlined: `bg-transparent border-${color}-700`,
+    }[variant];
+
+    return (
+      <>
+        <button
+          ref={ref}
+          className={`border ${buttonSize} ${buttonVariant} text-${textColor}`}
+          {...props}
+        >
+          {children}
+        </button>
+      </>
+    );
+  },
+);
 
 export default Button;
