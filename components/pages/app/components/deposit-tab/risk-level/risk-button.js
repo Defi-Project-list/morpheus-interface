@@ -6,7 +6,8 @@ const Button = ({ children }) => {
 
 const RiskButton = ({ riskLevel, value, handleRiskLevel, text, imageSrc, apy }) => {
   return (
-    <button
+    <div
+      role="button"
       onClick={() => handleRiskLevel(value)}
       className={`flex flex-col justify-center border items-center h-52 rounded-2xl bg-white relative overflow-hidden transition-transform duration-300 
         border-primary-500 relative p-3 hover:shadow-depositProducts`}
@@ -43,7 +44,7 @@ const RiskButton = ({ riskLevel, value, handleRiskLevel, text, imageSrc, apy }) 
           </div>
         </div>
       </div>
-    </button>
+    </div>
   );
 };
 
