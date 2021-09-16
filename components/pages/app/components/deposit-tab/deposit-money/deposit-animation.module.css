@@ -1,0 +1,8 @@
+.slide_up {
+  transform: translateY(-150%);
+  transition: transform 0.5s;
+}
+.slide_up_input {
+  transform: translateY(-220%);
+  transition: transform 0.5s;
+}

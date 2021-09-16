@@ -1,22 +1,52 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { CloseIcon } from '@assets/icons';
+import { WalletContext } from '@components/pages/app';
+
 import DepositInput from './deposit-input';
+import DepositHeader, { DepositHeaderApproved } from './deposit-header';
 
 import { contractAddress } from '../../../config/addresses';
-
 import { checkAllowance } from '../../../utils/checkAllowance';
 import { convertToBigNum } from '../../../utils/convertBigNumber';
-import DepositHeader from './deposit-header';
 import { DEGENERATE, HIGH, LOW, SAFE } from '../../../../../../constants';
-import { WalletContext } from '@components/pages/app';
-import DepositModal, { ApproveModal } from './deposit-modal';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
 
-const DepositMoney = ({ riskLevel }) => {
+const getProductInfo = (productKey) => {
+  const product = {
+    [SAFE]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.05,
+    },
+    [LOW]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.2,
+    },
+    [HIGH]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.3,
+    },
+    [DEGENERATE]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.7,
+    },
+  }[productKey];
+  return product;
+};
+
+const DepositMoney = ({ riskLevel, setOpen }) => {
   const { contracts, address, updateAccountData } = useContext(WalletContext);
-  const [deposit, setDeposit] = useState(0);
+  const [deposit, setDeposit] = useState(1000);
   const [APY, setAPY] = useState(0);
   const [acceptedAllowance, setAcceptedAllowance] = useState(false);
   const [depositStatus, setDepositStatus] = useState();
@@ -47,26 +77,21 @@ const DepositMoney = ({ riskLevel }) => {
     const gasPrice = await fetchGas().then((r) => r.data?.standard * 1e9);
     const depositAmount = convertToBigNum(deposit);
     try {
-      const approveDeposit = await contracts.DAI.approve(contractAddress.DAI_VAULT, depositAmount, {
-        gasPrice,
-      });
-      setApproveOpen(true);
-      await approveDeposit.wait();
-      const isAmountAllowed = await checkAllowance(address, contracts.DAI, deposit);
-      setAcceptedAllowance(isAmountAllowed);
-      setApproveStatus({ success: true });
+      // const approveDeposit = await contracts.DAI.approve(contractAddress.DAI_VAULT, depositAmount, {
+      //   gasPrice,
+      // });
+      // setApproveOpen(true);
+      // await approveDeposit.wait();
+      // const isAmountAllowed = await checkAllowance(address, contracts.DAI, deposit);
+      // setAcceptedAllowance(isAmountAllowed);
+      // setTimeout(() => {
+      //   setApproveStatus({ success: true });
+      // }, 10000);
+      // setApproveStatus({ success: true });
     } catch (err) {
       console.error(err, 'error approving app');
       setApproveStatus({ error: true });
     }
-  };
-
-  const handleAPY = (APY) => {
-    if (APY === SAFE) return 0.1;
-    else if (APY === LOW) return 0.15;
-    else if (APY === HIGH) return 0.2;
-    else if (APY === DEGENERATE) return 0.3;
-    return null;
   };
 
   async function allowance() {
@@ -79,13 +104,30 @@ const DepositMoney = ({ riskLevel }) => {
   }, [deposit]);
 
   useEffect(() => {
-    setAPY(handleAPY(riskLevel));
+    setAPY(getProductInfo(riskLevel)?.apy);
   }, [riskLevel]);
 
+  console.log({ approveStatus });
+
   return (
-    <div className="w-full flex justify-center items-center mt-20">
-      <div className="w-6/12">
-        <DepositHeader deposit={deposit} APY={APY} />
+    <div className="w-full flex justify-center items-center flex-col">
+      <div className="pb-4 border-b border-primary-100 w-full flex items-center justify-between">
+        <h2 className="text-black-100 text-lg capitalize font-bold">Invest funds</h2>
+        <button
+          className="cursor-pointer hover:bg-black-400 p-1 rounded"
+          onClick={() => setOpen(false)}
+        >
+          <CloseIcon color="white" w="16px" />
+        </button>
+      </div>
+      <h1 className="text-black-100 text-5xl capitalize font-bold pt-8 ">{riskLevel}</h1>
+      <div className="overflow-hidden">
+        <DepositHeader
+          deposit={deposit}
+          APY={APY}
+          riskLevel={riskLevel}
+          approveStatus={approveStatus}
+        />
         <DepositInput
           acceptedAllowance={acceptedAllowance}
           deposit={deposit}
@@ -93,10 +135,12 @@ const DepositMoney = ({ riskLevel }) => {
           submitApprove={submitApprove}
           setDeposit={setDeposit}
           depositStatus={depositStatus}
+          approveStatus={approveStatus}
         />
+        <DepositHeaderApproved loading={approveStatus?.loading} success={false} deposit={deposit} />
       </div>
-      <DepositModal open={openDeposit} setOpen={setDepositOpen} status={depositStatus} />
-      <ApproveModal open={openApprove} setOpen={setApproveOpen} status={approveStatus} />
+      {/* <DepositModal open={openDeposit} setOpen={setDepositOpen} status={depositStatus} />
+      <ApproveModal open={openApprove} setOpen={setApproveOpen} status={approveStatus} /> */}
     </div>
   );
 };
