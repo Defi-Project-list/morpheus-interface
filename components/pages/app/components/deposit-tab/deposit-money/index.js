@@ -1,19 +1,48 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { CloseIcon } from '@assets/icons';
+import { WalletContext } from '@components/pages/app';
+
 import DepositInput from './deposit-input';
+import DepositHeader from './deposit-header';
 
 import { contractAddress } from '../../../config/addresses';
-
 import { checkAllowance } from '../../../utils/checkAllowance';
 import { convertToBigNum } from '../../../utils/convertBigNumber';
-import DepositHeader from './deposit-header';
 import { DEGENERATE, HIGH, LOW, SAFE } from '../../../../../../constants';
-import { WalletContext } from '@components/pages/app';
-import DepositModal, { ApproveModal } from './deposit-modal';
-import { CloseIcon } from '@assets/icons';
 
 const fetchGas = () => axios.get(contractAddress.GAS_STATION);
+
+const getProductInfo = (productKey) => {
+  const product = {
+    [SAFE]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.05,
+    },
+    [LOW]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.2,
+    },
+    [HIGH]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.3,
+    },
+    [DEGENERATE]: {
+      title: 'Savings Account',
+      risLevel: 'low',
+      description: 'something here',
+      apy: 0.7,
+    },
+  }[productKey];
+  return product;
+};
 
 const DepositMoney = ({ riskLevel, setOpen }) => {
   const { contracts, address, updateAccountData } = useContext(WalletContext);
@@ -62,14 +91,6 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
     }
   };
 
-  const handleAPY = (APY) => {
-    if (APY === SAFE) return 0.05;
-    if (APY === LOW) return 0.1;
-    if (APY === HIGH) return 0.2;
-    if (APY === DEGENERATE) return 0.3;
-    return null;
-  };
-
   async function allowance() {
     const isAllowanceApproved = await checkAllowance(address, contracts?.DAI, deposit);
     setAcceptedAllowance(isAllowanceApproved);
@@ -80,7 +101,7 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
   }, [deposit]);
 
   useEffect(() => {
-    setAPY(handleAPY(riskLevel));
+    setAPY(getProductInfo(riskLevel)?.apy);
   }, [riskLevel]);
 
   return (
@@ -94,7 +115,7 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
           <CloseIcon color="white" w="16px" />
         </button>
       </div>
-      <h1 className="text-black-100 text-5xl capitalize font-bold py-6">{riskLevel}</h1>
+      <h1 className="text-black-100 text-5xl capitalize font-bold pt-8 ">{riskLevel}</h1>
       <div className="">
         <DepositHeader deposit={deposit} APY={APY} riskLevel={riskLevel} />
         <DepositInput

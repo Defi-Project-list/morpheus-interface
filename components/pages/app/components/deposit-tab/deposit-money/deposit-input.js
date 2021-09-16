@@ -5,7 +5,7 @@ export const Button = ({ onClick, children }) => {
   return (
     <button
       onClick={onClick}
-      className="w-full whitespace-nowrap uppercase text-lg font-seminole px-2 py-3 rounded-lg bg-primary-500 text-white hover:-border-2 hover:bg-primary-600  hover:shadow-lg"
+      className="w-full whitespace-nowrap capitalize text-lg font-seminole px-2 py-3 rounded-lg bg-primary-500 text-black-500 font-bold hover:-border-2 hover:bg-primary-600  hover:shadow-lg"
     >
       {children}
     </button>
@@ -28,7 +28,7 @@ const DepositInput = ({
 
   return (
     <div className="w-full flex justify-center items-center">
-      <div className="mt-12  flex flex-col items-center justify-center py-4 h-40">
+      <div className="flex flex-col items-center justify-center py-4 h-40">
         <div className="">
           <div className="flex mb-8">
             <NumberFormat
@@ -58,7 +58,7 @@ const DepositInput = ({
             ) : acceptedAllowance ? (
               <Button onClick={submitDeposit}>Deposit Amount</Button>
             ) : (
-              <Button onClick={submitApprove}> Approve Transfer</Button>
+              <Button onClick={submitApprove}> Approve Deposit</Button>
             )}
           </div>
         </div>
