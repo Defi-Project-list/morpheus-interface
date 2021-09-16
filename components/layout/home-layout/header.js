@@ -24,8 +24,8 @@ export const Header = () => {
         </p>
       </div>
       <div className="w-1/3 hidden xl:flex items-center justify-end">
-        <Link href="/app">
-          <Button text="Enter App" />
+        <Link href="/app" passHref={true}>
+          <Button>Enter App</Button>
         </Link>
       </div>
       <div className="w-1/3 flex xl:hidden items-center justify-end">

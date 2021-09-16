@@ -24,8 +24,8 @@ const Hero = () => {
           </h3>
         </div>
         <div className="mt-5 xl:mt-14">
-          <Link href="/app">
-            <Button text="Enter App" size="large" />
+          <Link href="/app" passHref={true}>
+            <Button>Enter App</Button>
           </Link>
           <p className="mt-3 text-sm xl:text-base font-light text-gray-500">
             ☑️ {' Simple, Fast & Secure'}

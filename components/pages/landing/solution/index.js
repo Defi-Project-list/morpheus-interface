@@ -24,13 +24,13 @@ const Solution = () => {
           </h3>
         </div>
         <div className="hidden xl:block mt-14">
-          <Link href="/app">
-            <Button text="Enter App" size="large" textColor="text-white" />
+          <Link href="/app" passHref={true}>
+            <Button>Enter App</Button>
           </Link>
         </div>
         <div className="xl:hidden block mt-4">
-          <Link href="/app">
-            <Button text="Enter App" size="small" textColor="text-white" />
+          <Link href="/app" passHref={true}>
+            <Button size="sm">Enter App</Button>
           </Link>
         </div>
         <div className="xl:hidden absolute -right-10 -bottom-12 w-2/5">
