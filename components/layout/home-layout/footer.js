@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const classNameItem =
-  'w-min cursor-pointer py-1 my-2 border-b-2 border-transparent hover:border-primary-500 whitespace-nowrap';
+  'w-min cursor-pointer text-sm xl:text-base py-1 my-1 xl:my-2 border-b-2 border-transparent hover:border-primary-500 whitespace-nowrap';
 
 export const Footer = () => {
   return (
@@ -14,7 +14,7 @@ export const Footer = () => {
           <p className="mt-2 xl:mt-4 text-sm xl:text-base font-serif">© Epsilon Labs, Inc 2021</p>
         </div>
       </div>
-      <div className="w-full xl:w-4/6 grid grid-cols-2  xl:grid-cols-3 gap-y-10 gap-x-10 xl:gap-x-20 h-full mt-10 xl:mt-0">
+      <div className="w-full xl:w-4/6 grid grid-cols-2  xl:grid-cols-3 gap-y-10 gap-x-10 xl:gap-x-20 mt-10 xl:mt-0">
         <div>
           <h4 className="text-lg font-medium mb-4 text-primary-500">Pages</h4>
           <div className="w-full xl:w-4/6 flex flex-col text-white ">
