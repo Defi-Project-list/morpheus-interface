@@ -77,37 +77,32 @@ const Steps = () => {
   );
 };
 
-const DepositHeaderApproved = ({ deposit, loading, success, approveStatus }) => {
-  console.log({ loading });
+export const DepositHeaderApproved = ({ deposit, loading, success, approveStatus }) => {
+  if (!loading) return null;
   return (
-    <div
-      className={`w-full flex-col items-center justify-center 
-      transition duration-500 ease-in-out ${
-        loading ? 'opacity-100 py-6 scale-1 flex ' : 'opacity-0 hidden h-0'
-      }`}
-    >
-      <div className="mb-6">
-        <Steps />
+    <div>
+      <div className={`w-full flex flex-col items-center justify-center `}>
+        <div className="mb-6">
+          <Steps />
+        </div>
+        <CheckAnimation status={{ loading, success }} />
+        <span className="text-xl font-normal text-black-200 mr-3">
+          Approving deposit of{' '}
+          <span className="text-primary-500">
+            {new Intl.NumberFormat('en-US', { maximumSignificantDigits: 3 }).format(deposit)} DAI
+          </span>
+        </span>
       </div>
-      <CheckAnimation status={{ loading, success }} />
-      <span className="text-xl font-normal text-black-200 mr-3">
-        Approving deposit of <span className="text-primary-500">{deposit} DAI</span>
-      </span>
     </div>
   );
 };
 
 const DepositHeader = ({ deposit, APY, riskLevel, approveStatus }) => {
   const { loading } = approveStatus || {};
+  if (loading) return null;
   return (
     <>
-      <DepositHeaderApproved loading={loading} success={false} deposit={deposit} />
-      <div
-        className={`w-full flex flex-col items-center justify-around mt-6 
-        transition duration-500 ease-in-out ${
-          loading ? 'opacity-0 scale-0 h-0 ' : 'opacity-100 '
-        } `}
-      >
+      <div className={`w-full flex flex-col items-center justify-around mt-6 overflow-hidden `}>
         <ApySection APY={APY} />
         <IncomeSection deposit={deposit} APY={APY} />
         <ProductRiskSection riskLevel={riskLevel} />

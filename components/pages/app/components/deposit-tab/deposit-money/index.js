@@ -5,7 +5,7 @@ import { CloseIcon } from '@assets/icons';
 import { WalletContext } from '@components/pages/app';
 
 import DepositInput from './deposit-input';
-import DepositHeader from './deposit-header';
+import DepositHeader, { DepositHeaderApproved } from './deposit-header';
 
 import { contractAddress } from '../../../config/addresses';
 import { checkAllowance } from '../../../utils/checkAllowance';
@@ -84,9 +84,9 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
       // await approveDeposit.wait();
       // const isAmountAllowed = await checkAllowance(address, contracts.DAI, deposit);
       // setAcceptedAllowance(isAmountAllowed);
-      setTimeout(() => {
-        setApproveStatus({ success: true });
-      }, 10000);
+      // setTimeout(() => {
+      //   setApproveStatus({ success: true });
+      // }, 10000);
       // setApproveStatus({ success: true });
     } catch (err) {
       console.error(err, 'error approving app');
@@ -121,7 +121,7 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
         </button>
       </div>
       <h1 className="text-black-100 text-5xl capitalize font-bold pt-8 ">{riskLevel}</h1>
-      <div className="">
+      <div className="overflow-hidden">
         <DepositHeader
           deposit={deposit}
           APY={APY}
@@ -137,6 +137,7 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
           depositStatus={depositStatus}
           approveStatus={approveStatus}
         />
+        <DepositHeaderApproved loading={approveStatus?.loading} success={false} deposit={deposit} />
       </div>
       {/* <DepositModal open={openDeposit} setOpen={setDepositOpen} status={depositStatus} />
       <ApproveModal open={openApprove} setOpen={setApproveOpen} status={approveStatus} /> */}
