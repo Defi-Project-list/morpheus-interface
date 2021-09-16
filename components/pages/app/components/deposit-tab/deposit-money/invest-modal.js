@@ -1,4 +1,3 @@
-import CheckAnimation from '@components/components/check-animation';
 import Modal from '@components/components/modal';
 import DepositMoney from '.';
 

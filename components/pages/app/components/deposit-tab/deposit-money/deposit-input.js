@@ -5,7 +5,7 @@ export const Button = ({ onClick, children }) => {
   return (
     <button
       onClick={onClick}
-      className="w-full whitespace-nowrap uppercase text-lg font-semibold px-2 py-3 rounded-lg bg-primary-500 text-white hover:-border-2 hover:bg-primary-600  hover:shadow-lg"
+      className="w-full whitespace-nowrap uppercase text-lg font-seminole px-2 py-3 rounded-lg bg-primary-500 text-white hover:-border-2 hover:bg-primary-600  hover:shadow-lg"
     >
       {children}
     </button>
@@ -34,7 +34,7 @@ const DepositInput = ({
             <NumberFormat
               value={deposit}
               onValueChange={handleDeposit}
-              thousandSeparator={true}
+              thousandSeparator
               inputMode="numeric"
               className="w-full border-t border-l border-b border-gray-200 pt-2 pb-2 rounded-t-lg rounded-l-lg rounded-b-lg rounded-r-none text-2xl text-right pr-4"
             />
@@ -45,6 +45,7 @@ const DepositInput = ({
               <img
                 src="https://raw.githubusercontent.com/uniswap/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"
                 width="20px"
+                alt=""
               />
               <span className="ml-1 text-black-500 font-bold">DAI</span>
             </div>

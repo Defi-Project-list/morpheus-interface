@@ -64,9 +64,9 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
 
   const handleAPY = (APY) => {
     if (APY === SAFE) return 0.05;
-    else if (APY === LOW) return 0.1;
-    else if (APY === HIGH) return 0.2;
-    else if (APY === DEGENERATE) return 0.3;
+    if (APY === LOW) return 0.1;
+    if (APY === HIGH) return 0.2;
+    if (APY === DEGENERATE) return 0.3;
     return null;
   };
 
@@ -96,7 +96,7 @@ const DepositMoney = ({ riskLevel, setOpen }) => {
       </div>
       <h1 className="text-black-100 text-5xl capitalize font-bold py-6">{riskLevel}</h1>
       <div className="">
-        <DepositHeader deposit={deposit} APY={APY} />
+        <DepositHeader deposit={deposit} APY={APY} riskLevel={riskLevel} />
         <DepositInput
           acceptedAllowance={acceptedAllowance}
           deposit={deposit}

@@ -33,7 +33,7 @@ const RiskButton = ({ riskLevel, value, handleRiskLevel, text, imageSrc, apy }) 
         </div>
         <div className="h-full flex flex-col w-full justify-center">
           <div className="flex -mt-6 mb-6 justify-end w-full">
-            <DaiIcon w={'20px'} />
+            <DaiIcon w="20px" />
           </div>
           <div className="flex flex-col items-center">
             <span className="font-semibold text-3xl text-black-500">{text}</span>

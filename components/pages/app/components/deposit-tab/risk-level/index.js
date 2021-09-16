@@ -40,7 +40,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
           riskLevel={riskLevel}
           imageSrc="/assets/diamond.png"
           text="Variable"
-          apy={'>40'}
+          apy=">40"
         />
         <RiskButton
           value={DEGENERATE}
@@ -48,7 +48,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
           riskLevel={riskLevel}
           imageSrc="/assets/bag-coins.png"
           text="No Lose Lottery"
-          apy={'10K'}
+          apy="10K"
         />
       </div>
     </div>
