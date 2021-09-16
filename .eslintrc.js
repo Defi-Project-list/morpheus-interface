@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: ['next', 'airbnb', 'plugin:react/jsx-runtime', 'prettier'],
+  extends: ['next', 'plugin:react/jsx-runtime', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
