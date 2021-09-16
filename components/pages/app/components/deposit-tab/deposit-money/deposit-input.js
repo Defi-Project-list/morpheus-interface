@@ -20,11 +20,16 @@ const DepositInput = ({
   submitApprove,
   setDeposit,
   depositStatus,
+  approveStatus,
 }) => {
   const handleDeposit = (values) => {
     const { value } = values;
     setDeposit(value);
   };
+
+  if (approveStatus?.loading) {
+    return null;
+  }
 
   return (
     <div className="w-full flex justify-center items-center">

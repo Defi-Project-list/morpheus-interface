@@ -1,13 +1,10 @@
 import { DaiIcon, InformationIcon, RightArrowIcon } from '@assets/icons';
+import CheckAnimation from '@components/components/check-animation';
 import NumberFormat from 'react-number-format';
 
 const IncomeSection = ({ deposit, APY }) => {
   if (deposit === '0') {
-    return (
-      <p className="text-2xl font-bold text-primary-500">
-        <span className="text-lg font-light text-primary-500">*Add Deposit Amount</span>
-      </p>
-    );
+    return <span className="text-lg font-light text-primary-500">*Add Deposit Amount</span>;
   }
   const monthlyIncome = Math.round(((deposit * APY) / 12) * 100) / 100;
   return (
@@ -67,7 +64,7 @@ const AccountBalance = () => {
 
 const Steps = () => {
   return (
-    <div className="mt-12 flex items-center relative">
+    <div className="flex items-center relative">
       <span className="text-black-100 mx-2">approve</span>
       <RightArrowIcon color="white" />
       <span className="text-black-100 mx-2">deposit</span>
@@ -80,15 +77,46 @@ const Steps = () => {
   );
 };
 
-const DepositHeader = ({ deposit, APY, riskLevel }) => {
+const DepositHeaderApproved = ({ deposit, loading, success, approveStatus }) => {
+  console.log({ loading });
   return (
-    <div className="w-full flex flex-col items-center justify-around mt-6">
-      <ApySection APY={APY} />
-      <IncomeSection deposit={deposit} APY={APY} />
-      <ProductRiskSection riskLevel={riskLevel} />
-      <AccountBalance />
-      <Steps />
+    <div
+      className={`w-full flex-col items-center justify-center 
+      transition duration-500 ease-in-out ${
+        loading ? 'opacity-100 py-6 scale-1 flex ' : 'opacity-0 hidden h-0'
+      }`}
+    >
+      <div className="mb-6">
+        <Steps />
+      </div>
+      <CheckAnimation status={{ loading, success }} />
+      <span className="text-xl font-normal text-black-200 mr-3">
+        Approving deposit of <span className="text-primary-500">{deposit} DAI</span>
+      </span>
     </div>
+  );
+};
+
+const DepositHeader = ({ deposit, APY, riskLevel, approveStatus }) => {
+  const { loading } = approveStatus || {};
+  return (
+    <>
+      <DepositHeaderApproved loading={loading} success={false} deposit={deposit} />
+      <div
+        className={`w-full flex flex-col items-center justify-around mt-6 
+        transition duration-500 ease-in-out ${
+          loading ? 'opacity-0 scale-0 h-0 ' : 'opacity-100 '
+        } `}
+      >
+        <ApySection APY={APY} />
+        <IncomeSection deposit={deposit} APY={APY} />
+        <ProductRiskSection riskLevel={riskLevel} />
+        <AccountBalance />
+        <div className="mt-12 ">
+          <Steps />
+        </div>
+      </div>
+    </>
   );
 };
 
