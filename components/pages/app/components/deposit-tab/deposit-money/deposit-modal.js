@@ -30,6 +30,7 @@ const DepositModal = ({ open, setOpen, status }) => {
     </Modal>
   );
 };
+
 export const ApproveModal = ({ open, setOpen, status }) => {
   return (
     <Modal open={open} setOpen={setOpen}>

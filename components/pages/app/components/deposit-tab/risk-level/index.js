@@ -46,7 +46,7 @@ const RiskLevel = ({ riskLevel, setRiskLevel }) => {
           value={DEGENERATE}
           handleRiskLevel={handleRiskLevel}
           riskLevel={riskLevel}
-          imageSrc="/assets/diamond.png"
+          imageSrc="/assets/bag-coins.png"
           text="No Lose Lottery"
           apy={'10K'}
         />

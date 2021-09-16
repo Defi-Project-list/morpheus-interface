@@ -1,7 +1,7 @@
 import { DaiIcon } from '@assets/icons';
 
 const Button = ({ children }) => {
-  return <button className="bg-black-500 text-white rounded-md w-full py-1">{children}</button>;
+  return <button className="bg-black-500 text-white rounded-md w-full py-1 ">{children}</button>;
 };
 
 const RiskButton = ({ riskLevel, value, handleRiskLevel, text, imageSrc, apy }) => {
@@ -9,8 +9,7 @@ const RiskButton = ({ riskLevel, value, handleRiskLevel, text, imageSrc, apy }) 
     <button
       onClick={() => handleRiskLevel(value)}
       className={`flex flex-col justify-center border items-center h-52 rounded-2xl bg-white relative overflow-hidden transition-transform duration-300 
-        border-primary-500 relative p-3
-      `}
+        border-primary-500 relative p-3 hover:shadow-depositProducts`}
     >
       <div
         style={{
@@ -37,9 +36,7 @@ const RiskButton = ({ riskLevel, value, handleRiskLevel, text, imageSrc, apy }) 
             <DaiIcon w={'20px'} />
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-semibold text-3xl" style={{ color: '#0a2540' }}>
-              {text}
-            </span>
+            <span className="font-semibold text-3xl text-black-500">{text}</span>
           </div>
           <div className="mt-6 w-full">
             <Button>Details</Button>

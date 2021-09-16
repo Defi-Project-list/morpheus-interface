@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
 import RiskLevel from './risk-level';
-import DepositMoney from './deposit-money';
+import { InvestModal } from './deposit-money/invest-modal';
 
 const DepositTab = () => {
-  const [riskLevel, setRiskLevel] = useState('safe');
+  const [riskLevel, setRiskLevel] = useState(null);
 
   return (
     <>
       <RiskLevel riskLevel={riskLevel} setRiskLevel={setRiskLevel} />
-      {/* <DepositMoney riskLevel={riskLevel} /> */}
+
+      <InvestModal open={!!riskLevel} setOpen={setRiskLevel} investmentRisk={riskLevel} />
     </>
   );
 };
