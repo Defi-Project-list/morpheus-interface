@@ -7,7 +7,7 @@ import Cards from './cards';
 
 const HomeIndex = () => {
   return (
-    <div className="px-10 xl:px-36 font-sans">
+    <div className="px-8 xl:px-36 font-sans">
       <Hero />
       <Intro />
       <Works />
